@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import 'rxjs/Rx';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Rest Field Completer';
+  form: FormGroup;
+
+  constructor(fb: FormBuilder) {
+    this.form = fb.group({
+      zipCode: ['', [Validators.required, Validators.pattern('^[0-9]{2}-[0-9]{3}$')]]
+    });
+  }
 }

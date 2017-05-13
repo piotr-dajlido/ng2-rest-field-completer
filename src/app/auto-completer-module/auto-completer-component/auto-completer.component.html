@@ -1,0 +1,11 @@
+<div class="container"
+     [style.width.px]="width"
+     [style.height.px]="height +10"
+     [style.top.px]="top"
+     [style.left.px]="left">
+  <div (click)="onItemClicked($event)" [style.height.px]="itemHeight"
+     [style.paddingTop.px]="itemPadding"
+     [style.paddingBottom.px]="itemPadding"
+            class="item" *ngFor="let item of items; let i = index">{{item}}
+  </div>
+</div>

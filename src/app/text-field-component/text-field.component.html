@@ -1,9 +1,10 @@
 <div class="form-group">
   <label>
     <span><ng-content></ng-content></span>
-    <input [formControl]="input"
+    <input #inputElement
            class="form-control"
            (blur)="onBlur()"
-           [maxlength]="maxlength">
+           [(ngModel)]="value"
+           [attr.maxlength]="maxlength">
   </label>
 </div>

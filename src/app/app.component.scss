@@ -1,11 +1,18 @@
-* {
-  font-family: 'Open Sans', sans-serif;
-}
-.zipCode {
-  display:block;
-  width: 70px;
-}
-.city{
-  display:block;
-  width: 150px;
+:host {
+  font-family: monospace;
+  font-size: 8px;
+  img {
+    margin-bottom: -10px;
+  }
+  .zipCode {
+    display:block;
+    width: 70px;
+  }
+  .city{
+    display:block;
+    width: 150px;
+  }
+  fieldset {
+    z-index: -2;
+  }
 }

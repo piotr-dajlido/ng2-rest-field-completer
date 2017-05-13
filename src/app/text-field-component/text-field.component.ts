@@ -1,7 +1,8 @@
-import {Component, forwardRef, Input} from '@angular/core';
-import {NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl} from '@angular/forms';
+import {Component, forwardRef, Input, ViewChild, ViewContainerRef} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
-const noop = () => {};
+const noop = () => {
+};
 
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -13,53 +14,51 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   selector: 'app-text-field',
   templateUrl: 'text-field.component.html',
   styleUrls: ['text-field.component.scss'],
-  providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
+  providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR],
+
 })
 export class TextFieldComponent implements ControlValueAccessor {
 
   @Input() maxlength;
 
-  // The internal data model
-  private input = new FormControl();
+  // The internal data element
+  @ViewChild('inputElement') inputElement;
 
-  // Placeholders for the callbacks which are later providesd
-  // by the Control Value Accessor
-  private onTouchedCallback: () => void = noop;
-  private onChangeCallback: (_: any) => void = noop;
+  // Placeholders for the callbacks which are later provided
+  // by the Control Value
+  private onTouched: () => void = noop;
+  private onChange: (_: any) => void = noop;
+  private _value: any = '';
 
-  // get accessor
+  constructor(public viewContainerRef: ViewContainerRef) {
+  }
+
+  onBlur() {
+    this.onTouched();
+  }
+
   get value(): any {
-    return this.input.value;
+    return this._value;
   };
 
-  // set accessor including call the onchange callback
   set value(v: any) {
-    if (v !== this.input.value) {
-      this.input.setValue(v);
-      this.onChangeCallback(v);
+    if (v !== this._value) {
+      this._value = v;
+      this.onChange(v);
     }
   }
 
-  // Set touched on blur
-  onBlur() {
-    this.onTouchedCallback();
-  }
-
-  // From ControlValueAccessor interface
   writeValue(value: any) {
-    if (value !== this.input.value) {
-      this.input.setValue(value);
-    }
+    this._value = value;
+    this.onChange(value);
   }
 
-  // From ControlValueAccessor interface
-  registerOnChange(fn: any) {
-    this.onChangeCallback = fn;
+  registerOnChange(fn: (_: any) => void): void {
+    this.onChange = fn;
   }
 
-  // From ControlValueAccessor interface
-  registerOnTouched(fn: any) {
-    this.onTouchedCallback = fn;
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
   }
 
 }

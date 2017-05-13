@@ -1,13 +1,15 @@
 :host {
   margin: 10px;
   float: left;
+  z-index: 2;
+  position: relative;
   label {
     font-size: 10px;
     font-family: 'Open Sans', sans-serif;
     display: block;
     float: left;
     span {
-      float:left;
+      float: left;
       width: 100%;
     }
     input {

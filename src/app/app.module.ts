@@ -1,23 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HttpModule } from '@angular/http';
-
-import { AppComponent } from './app.component';
+import {HttpModule} from '@angular/http';
+import {AppComponent} from './app.component';
 import {TextFieldComponent} from './text-field-component/text-field.component';
+import {AutoCompleterModule} from './auto-completer-module/auto-completer-module';
 
 @NgModule({
   declarations: [
+    // Components
     AppComponent,
-    TextFieldComponent
+    TextFieldComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AutoCompleterModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule { }
+export class AppModule {
+}

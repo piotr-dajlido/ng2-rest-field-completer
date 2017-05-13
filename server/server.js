@@ -8,6 +8,7 @@ data['00-900'] = ['Gliwice'];
 
 app.get('/', function (req, res) {
   var responseData = data[req.query.zipCode] || [];
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.send(responseData);
 });
 
