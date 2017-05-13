@@ -66,6 +66,10 @@ export class AutoCompleterComponent implements OnDestroy {
     this.value.next($event.target.innerText);
   }
 
+  private onItemMouseenter($event){
+    this.choosen = +$event.target.getAttribute("index");
+  }
+
   public select(): void {
     this.value.next(this.items[this.choosen].label);
   }
