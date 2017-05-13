@@ -19,6 +19,7 @@ export class AutoCompleterDirective implements OnInit {
   private isOn: boolean = false;
 
   private componentRef: ComponentRef<AutoCompleterComponent>;
+  private autocompleter: AutoCompleterComponent;
   private autocompleterValue: Subscription;
 
   constructor(private _componentFactoryResolver: ComponentFactoryResolver,
@@ -41,13 +42,16 @@ export class AutoCompleterDirective implements OnInit {
   private open(): void {
     this.isOn = true;
     this.createComponent();
-    this.setDataToAutocompleter();
+    this.passDataToAutocompleter();
     this.passDataToDestination();
+    this.catchKeyboardEvents();
+    this.catchMouseEvents();
   }
 
   private close(): void {
     this.autocompleterValue.unsubscribe();
     this.componentRef.destroy();
+    this.releaseEvents();
     this.isOn = false;
   }
 
@@ -58,13 +62,14 @@ export class AutoCompleterDirective implements OnInit {
     viewContainerRef.clear();
 
     this.componentRef = viewContainerRef.createComponent(componentFactory);
+    this.autocompleter = this.componentRef.instance;
     const destinationControlPosition = this.destination.inputElement.nativeElement.getBoundingClientRect();
     console.log(destinationControlPosition);
 
-    (<AutoCompleterComponent>this.componentRef.instance).top = destinationControlPosition.top
+    this.autocompleter.top = destinationControlPosition.top
       + destinationControlPosition.height - 2;
-    (<AutoCompleterComponent>this.componentRef.instance).left = destinationControlPosition.left + 2;
-    (<AutoCompleterComponent>this.componentRef.instance).width = destinationControlPosition.width - 7;
+    this.autocompleter.left = destinationControlPosition.left + 2;
+    this.autocompleter.width = destinationControlPosition.width - 7;
   }
 
   private fetchData(): Observable<any> {
@@ -77,20 +82,58 @@ export class AutoCompleterDirective implements OnInit {
       .catch((error: any) => Observable.throw(error || 'Server error'));
   }
 
-  private setDataToAutocompleter(): void {
+  private passDataToAutocompleter(): void {
     this.fetchData().subscribe(data => {
-        (<AutoCompleterComponent>this.componentRef.instance).items = data;
+      this.autocompleter.items = data;
     });
   }
+
   private passDataToDestination(): void {
-    this.autocompleterValue = (<AutoCompleterComponent>this.componentRef.instance).value.subscribe((value => {
+    this.autocompleterValue = this.autocompleter.value.subscribe((value => {
       this.destination.writeValue(value);
+      this.destination.inputElement.nativeElement.focus();
       this.close();
     }));
   }
 
   private catchKeyboardEvents(): void {
+    document.addEventListener('keydown', this.keyboardDownEvent.bind(this));
+  }
 
+  private keyboardDownEvent(e: KeyboardEvent) {
+    console.log(e.keyCode);
+    if ([37, 38, 39, 40].indexOf(e.keyCode) !== -1) {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+    }
+    if (e.keyCode === 38) {
+      this.autocompleter.choosen = this.autocompleter.choosen - 1;
+    }
+    else if (e.keyCode === 40) {
+      this.autocompleter.choosen = this.autocompleter.choosen + 1;
+    }
+    else if (e.keyCode === 37) {
+      // left arrow
+    }
+    else if (e.keyCode === 39) {
+      // right arrow
+    }
+
+  }
+
+  private catchMouseEvents(): void {
+    document.addEventListener('click', this.mouseOnClick.bind(this));
+  }
+
+  private mouseOnClick(e: MouseEvent) {
+    if (e.target != this.autocompleter.elementRef.nativeElement) {
+      this.close();
+    }
+  }
+
+  private releaseEvents(): void {
+    document.removeEventListener('click', this.mouseOnClick);
+    document.removeEventListener('keydown', this.keyboardDownEvent);
   }
 
 }

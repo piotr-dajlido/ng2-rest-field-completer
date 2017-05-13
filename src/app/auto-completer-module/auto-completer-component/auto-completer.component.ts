@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy} from '@angular/core';
+import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 
 @Component({
@@ -6,22 +6,45 @@ import {Subject} from 'rxjs/Subject';
   templateUrl: 'auto-completer.component.html',
   styleUrls: ['auto-completer.component.scss']
 })
-export class AutoCompleterComponent implements OnDestroy{
+export class AutoCompleterComponent implements OnDestroy {
 
   public value: Subject<string> = new Subject();
 
-  _items = [];
-  set items(v){
-    if(v.length < 1){
-      this._items = ['Brak Wyników'];
+  _items: Array<{ label: string, selected: boolean }> = [];
+  set items(v: any[]) {
+    if (v.length < 1) {
+      this._items = [{
+        label: 'Brak Wyników', selected: false
+      }];
     } else {
-      this._items = v;
+      this._items = v.map(value => {
+        return {
+          label: value, selected: false
+        }
+      });
     }
     this.height = this.items.length * ((this.itemPadding * 2) + this.itemHeight);
   }
-  get items(){
+
+  get items(): any[] {
     return this._items;
   }
+
+  _choosen: number = -1;
+  set choosen(v) {
+    if (v > -1 && v < this._items.length) {
+      this.items.forEach(item => {
+        item.selected = false;
+      });
+      this.items[v].selected = true;
+      this._choosen = v;
+    }
+  }
+
+  get choosen() {
+    return this._choosen;
+  }
+
 
   itemHeight: number = 10;
   itemPadding: number = 4;
@@ -32,13 +55,30 @@ export class AutoCompleterComponent implements OnDestroy{
   height: number = this.items.length * ((this.itemPadding * 2) + this.itemHeight);
 
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(public elementRef: ElementRef) {
+  }
 
   ngOnDestroy(): void {
     this.value.complete();
   }
 
-  private onItemClicked($event){
-   this.value.next($event.target.innerText);
+  private onItemClick($event) {
+    this.value.next($event.target.innerText);
+  }
+
+  private onItemMouseenter($event) {
+    this.CssHover($event.target);
+  }
+
+  private onItemMouseleave($event) {
+    this.CssReset($event.target);
+  }
+
+  private CssHover(element) {
+    element.style.backgroundColor = 'orangered';
+  }
+
+  private CssReset(element) {
+    element.style.backgroundColor = 'white';
   }
 }

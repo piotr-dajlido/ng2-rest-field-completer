@@ -5,6 +5,7 @@ var data = {};
 data['00-700'] = ['Warszawa', 'Radom', 'Wrocław'];
 data['00-800'] = ['Sopot', 'Poznań', 'Katowice', 'Częstochowa'];
 data['00-900'] = ['Gliwice'];
+data['99-999'] = ['Kocham Kasię'];
 
 app.get('/', function (req, res) {
   var responseData = data[req.query.zipCode] || [];

@@ -18,9 +18,9 @@
       margin: 0 0 5px 0;
     }
     font-size: 9px;
-    &:hover {
-      background: orangered;
-      cursor: pointer;
-    }
+    cursor: pointer;
+  }
+  .item.hover{
+    background-color: orange;
   }
 }
