@@ -102,7 +102,7 @@ export class AutoCompleterDirective implements OnInit {
 
   private keyboardDownEvent(e: KeyboardEvent) {
     console.log(e.keyCode);
-    if ([37, 38, 39, 40].indexOf(e.keyCode) !== -1) {
+    if ([37, 38, 39, 40,13].indexOf(e.keyCode) !== -1) {
       e.stopImmediatePropagation();
       e.preventDefault();
     }
@@ -112,13 +112,9 @@ export class AutoCompleterDirective implements OnInit {
     else if (e.keyCode === 40) {
       this.autocompleter.choosen = this.autocompleter.choosen + 1;
     }
-    else if (e.keyCode === 37) {
-      // left arrow
+    else if (e.keyCode === 13) {
+      this.autocompleter.select();
     }
-    else if (e.keyCode === 39) {
-      // right arrow
-    }
-
   }
 
   private catchMouseEvents(): void {

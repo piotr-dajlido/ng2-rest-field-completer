@@ -5,6 +5,7 @@
      [style.left.px]="left">
     <div class="item" *ngFor="let item of items; let i = index"
          [ngClass]="{'hover': items[i].selected }"
+         [attr.index]="i"
          (click)="onItemClick($event)"
          (mouseenter)="onItemMouseenter($event)"
          (mouseleave)="onItemMouseleave($event)"

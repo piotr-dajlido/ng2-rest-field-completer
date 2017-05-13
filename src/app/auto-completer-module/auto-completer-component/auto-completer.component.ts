@@ -66,19 +66,7 @@ export class AutoCompleterComponent implements OnDestroy {
     this.value.next($event.target.innerText);
   }
 
-  private onItemMouseenter($event) {
-    this.CssHover($event.target);
-  }
-
-  private onItemMouseleave($event) {
-    this.CssReset($event.target);
-  }
-
-  private CssHover(element) {
-    element.style.backgroundColor = 'orangered';
-  }
-
-  private CssReset(element) {
-    element.style.backgroundColor = 'white';
+  public select(): void {
+    this.value.next(this.items[this.choosen].label);
   }
 }
