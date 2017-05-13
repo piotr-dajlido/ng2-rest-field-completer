@@ -1,0 +1,17 @@
+:host {
+  margin: 10px;
+  float: left;
+  label {
+    font-size: 10px;
+    font-family: 'Open Sans', sans-serif;
+    display: block;
+    float: left;
+    span {
+      float:left;
+      width: 100%;
+    }
+    input {
+      width: 100%;
+    }
+  }
+}
