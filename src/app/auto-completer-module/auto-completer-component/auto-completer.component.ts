@@ -20,7 +20,7 @@ export class AutoCompleterComponent implements OnDestroy {
       this._items = v.map(value => {
         return {
           label: value, selected: false
-        }
+        };
       });
     }
     this.height = this.items.length * ((this.itemPadding * 2) + this.itemHeight);
@@ -66,8 +66,8 @@ export class AutoCompleterComponent implements OnDestroy {
     this.value.next($event.target.innerText);
   }
 
-  private onItemMouseenter($event){
-    this.choosen = +$event.target.getAttribute("index");
+  private onItemMouseenter($event) {
+    this.choosen = +$event.target.getAttribute('index');
   }
 
   public select(): void {

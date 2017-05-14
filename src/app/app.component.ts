@@ -13,8 +13,7 @@ export class AppComponent {
 
   constructor(fb: FormBuilder) {
     this.form = fb.group({
-      zipCode: ['', [Validators.required, Validators.pattern('^[0-9]{2}-[0-9]{3}$')]],
-      zipCode2: ['', [Validators.required, Validators.pattern('^[0-9]{2}-[0-9]{3}$')]]
+      zipCode: ['', [Validators.required, Validators.pattern('^[0-9]{2}-[0-9]{3}$')]]
     });
   }
 }
